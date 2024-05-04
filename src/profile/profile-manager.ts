@@ -1,12 +1,12 @@
 import path from 'path';
-import { File, ParsedQuery, Query } from '../util';
+import { File, Query, ResponseQuery } from '../util';
 
 export interface Profile {
   iauth: string;
   userId: string;
 }
 
-export interface ProfileFormQuery extends ParsedQuery {
+export interface ProfileFormQuery extends ResponseQuery {
   iauth: string;
   user_id: string;
   first_request: string;

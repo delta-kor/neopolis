@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { ParsedQuery, Query, Xml } from '../util';
+import { Query, RequestQuery, Xml } from '../util';
 
 export class RequestClient {
   constructor() {}
 
-  public async shoot(url: string, query: ParsedQuery): Promise<HTMLElement> {
+  public async shoot(url: string, query: RequestQuery): Promise<HTMLElement> {
     const payload = Query.stringify(query);
     const headers = {
       Host: 'cf-city-int.socialquantum.com',
