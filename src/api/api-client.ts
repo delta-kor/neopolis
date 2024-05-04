@@ -13,7 +13,7 @@ export class ApiClient {
     private readonly session: Session
   ) {}
 
-  public async getUserStat(option: GetUserStatOption): Promise<HTMLElement> {
+  public async getUserStat(option: GetUserStatOption): Promise<Element> {
     const url = ServiceUrl.get('getUserStat');
 
     const query: RequestQuery = {
