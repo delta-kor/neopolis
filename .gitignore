@@ -1,5 +1,6 @@
 .idea/
-dist/
-node_modules/
-profile/
+/dist/
+/node_modules/
+/profile/
+/test/
 .env
