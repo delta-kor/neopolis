@@ -1,7 +1,16 @@
 import path from 'path';
-import { File, Query } from '../util';
+import { File, ParsedQuery, Query } from '../util';
 
-export interface Profile {}
+export interface Profile {
+  iauth: string;
+  userId: string;
+}
+
+export interface ProfileFormQuery extends ParsedQuery {
+  iauth: string;
+  user_id: string;
+  first_request: string;
+}
 
 export class ProfileManager {
   constructor(private readonly path: string) {}
@@ -16,8 +25,11 @@ export class ProfileManager {
       throw new Error(`Profile ${name} does not have a form.txt file`);
 
     const profileFormText = File.readTextSync(profileFormPath);
-    const profileFormParsed = Query.parse(profileFormText);
+    const profileFormParsed = Query.parse<ProfileFormQuery>(profileFormText);
 
-    return {};
+    return {
+      iauth: profileFormParsed.iauth,
+      userId: profileFormParsed.user_id,
+    };
   }
 }
