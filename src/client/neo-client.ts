@@ -1,5 +1,6 @@
 import { ApiClient } from '../api';
-import { CommandBuilder } from '../command';
+import { Building, ResidentialBuilding } from '../building';
+import { Command, CommandBuilder } from '../command';
 import { Field } from '../field';
 import { Profile } from '../profile';
 import { Session } from './session';
@@ -18,9 +19,19 @@ export class NeoClient {
     return this;
   }
 
-  public async pick(item: Element, room: number): Promise<NeoClient> {
-    const command = this.commandBuilder.create({ command: 'pick', item_id: '234' }, room);
-    await this.apiClient.checkAndPerform({ commands: [command], room });
+  public async pick(buildings: Building[], room: number): Promise<NeoClient> {
+    for (const building of buildings) {
+      if (!(building instanceof ResidentialBuilding))
+        throw new Error(`Building ${building.name} (${building.id}) is not a residential building`);
+    }
+
+    const commands: Command[] = [];
+    for (const building of buildings) {
+      const command = this.commandBuilder.create({ command: 'pick', item_id: building.id }, room);
+      commands.push(command);
+    }
+
+    await this.apiClient.checkAndPerform({ commands, room });
 
     return this;
   }

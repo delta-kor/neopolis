@@ -1,3 +1,5 @@
+import { Building, BuildingManager } from '../building';
+
 export class Field {
   private readonly fieldMap: Map<number, Element> = new Map();
 
@@ -12,11 +14,12 @@ export class Field {
     return this.fieldMap.get(room) || null;
   }
 
-  public getItemsByName(name: string, room: number): Element[] {
+  public getItemsByName(name: string, room: number): Building[] {
     const field = this.getField(room);
     if (!field) throw new Error(`Field not found for room ${room}`);
 
     const elements = field.getElementsByTagName(name);
-    return [...elements];
+    const buildings = [...elements].map(element => BuildingManager.fromElement(element));
+    return buildings;
   }
 }

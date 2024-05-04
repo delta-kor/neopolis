@@ -48,6 +48,8 @@ export class ApiClient {
     };
 
     const response = await this.requestClient.shoot(url, query);
+    if (!response.querySelector('ok')) throw new Error('Failed to check and perform');
+
     return response;
   }
 }
