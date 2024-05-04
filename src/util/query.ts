@@ -1,15 +1,12 @@
 import qs from 'qs';
 
 export interface RequestQuery {
-  [key: string]: undefined | RequestQueryData | RequestQueryData[];
+  [key: string]: undefined | string | string[] | number | boolean | RequestQuery | RequestQuery[];
 }
 
 export interface ResponseQuery {
-  [key: string]: undefined | ResponseQueryData | ResponseQueryData[];
+  [key: string]: undefined | string | ResponseQuery | ResponseQuery[];
 }
-
-type RequestQueryData = RequestQuery | string | number | boolean;
-type ResponseQueryData = ResponseQuery | string;
 
 export class Query {
   public static parse<T extends RequestQuery>(text: string): T {

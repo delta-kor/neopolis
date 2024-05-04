@@ -5,6 +5,7 @@ import { UserStat } from './user-stat';
 export interface SessionData {
   sessionKey: string;
   commandId: number;
+  cityName: string;
   field: Field;
   barn: Barn;
   stat: UserStat;
@@ -19,9 +20,11 @@ export class Session {
   public init(country: Element): Session {
     const sessionKey = country.getAttribute('session_key');
     const commandId = country.getAttribute('server_cmd_id');
+    const cityName = country.getAttribute('city_name');
 
     if (!sessionKey) throw new Error('Session key not found');
     if (!commandId) throw new Error('Command ID not found');
+    if (!cityName) throw new Error('City name not found');
 
     const fieldElement = country.querySelector('field');
     const barnElement = country.querySelector('barn');
@@ -39,6 +42,7 @@ export class Session {
     this.data = {
       sessionKey: sessionKey,
       commandId: parseInt(commandId),
+      cityName,
       field,
       barn,
       stat,
@@ -56,27 +60,32 @@ export class Session {
     return this.requestNo++;
   }
 
-  public getSessionKey(): string {
-    if (!this.data) throw new Error('Session not initialized');
-    return this.data.sessionKey;
-  }
-
   public getCommandId(): number {
     if (!this.data) throw new Error('Session not initialized');
     return ++this.data.commandId;
   }
 
-  public getField(): Field {
+  public get sessionKey(): string {
+    if (!this.data) throw new Error('Session not initialized');
+    return this.data.sessionKey;
+  }
+
+  public get cityName(): string {
+    if (!this.data) throw new Error('Session not initialized');
+    return this.data.cityName;
+  }
+
+  public get field(): Field {
     if (!this.data) throw new Error('Session not initialized');
     return this.data.field;
   }
 
-  public getBarn(): Barn {
+  public get barn(): Barn {
     if (!this.data) throw new Error('Session not initialized');
     return this.data.barn;
   }
 
-  public getStat(): UserStat {
+  public get stat(): UserStat {
     if (!this.data) throw new Error('Session not initialized');
     return this.data.stat;
   }

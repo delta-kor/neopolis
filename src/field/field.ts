@@ -8,7 +8,15 @@ export class Field {
     return this;
   }
 
-  public get(room: number): Element | null {
+  public getField(room: number): Element | null {
     return this.fieldMap.get(room) || null;
+  }
+
+  public getItemsByName(name: string, room: number): Element[] {
+    const field = this.getField(room);
+    if (!field) throw new Error(`Field not found for room ${room}`);
+
+    const elements = field.getElementsByTagName(name);
+    return [...elements];
   }
 }
