@@ -48,6 +48,17 @@ export class ApiClient {
     };
 
     const response = await this.requestClient.shoot(url, query);
+
+    const errors = response.querySelectorAll('error');
+    if (errors.length) {
+      const error = errors[0];
+      const command = error.getAttribute('command');
+      const message = error.textContent;
+      throw new Error(
+        `Failed to check and perform: #${command} ${message} [Total ${errors.length} error(s)]`
+      );
+    }
+
     if (!response.querySelector('ok')) throw new Error('Failed to check and perform');
 
     return response;
