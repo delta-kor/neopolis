@@ -1,17 +1,12 @@
+import { Barn } from '../barn';
 import { Field } from '../field';
-
-export interface UserStat {
-  level: number;
-  exp: number;
-  coin: number;
-  gold: number;
-}
+import { UserStat } from './user-stat';
 
 export interface SessionData {
   sessionKey: string;
   commandId: number;
   field: Field;
-  barn: Element;
+  barn: Barn;
   stat: UserStat;
 }
 
@@ -29,20 +24,17 @@ export class Session {
     if (!commandId) throw new Error('Command ID not found');
 
     const fieldElement = country.querySelector('field');
-    const barn = country.querySelector('barn');
+    const barnElement = country.querySelector('barn');
 
     if (!fieldElement) throw new Error('Field not found');
-    if (!barn) throw new Error('Barn not found');
+    if (!barnElement) throw new Error('Barn not found');
 
     const field = new Field();
     field.set(fieldElement, 0);
 
-    const stat: UserStat = {
-      level: parseInt(country.getAttribute('level')!),
-      exp: parseInt(country.getAttribute('exp')!),
-      coin: parseInt(country.getAttribute('coins')!),
-      gold: parseInt(country.getAttribute('gold')!),
-    };
+    const barn = new Barn(barnElement);
+
+    const stat = new UserStat(country);
 
     this.data = {
       sessionKey: sessionKey,
@@ -79,7 +71,7 @@ export class Session {
     return this.data.field;
   }
 
-  public getBarn(): Element {
+  public getBarn(): Barn {
     if (!this.data) throw new Error('Session not initialized');
     return this.data.barn;
   }
