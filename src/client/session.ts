@@ -1,5 +1,6 @@
 import { Barn } from '../barn';
 import { Field } from '../field';
+import { State } from '../state';
 import { UserStat } from './user-stat';
 
 export interface SessionData {
@@ -9,6 +10,7 @@ export interface SessionData {
   field: Field;
   barn: Barn;
   stat: UserStat;
+  state?: State;
 }
 
 export class Session {
@@ -34,9 +36,7 @@ export class Session {
 
     const field = new Field();
     field.set(fieldElement, 0);
-
     const barn = new Barn(barnElement);
-
     const stat = new UserStat(country);
 
     this.data = {
@@ -47,6 +47,8 @@ export class Session {
       barn,
       stat,
     };
+
+    if (State.hasState(country)) this.data.state = new State(country);
 
     return this;
   }

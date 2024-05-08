@@ -5,4 +5,5 @@ export * from './client';
 export * from './command';
 export * from './field';
 export * from './profile';
+export * from './state';
 export * from './util';
