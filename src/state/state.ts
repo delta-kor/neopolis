@@ -1,7 +1,7 @@
 export class State {
   public readonly id: string;
-  public readonly orderQuestId: string;
-  public readonly buildQuestId: string;
+  public readonly orderQuestId?: string;
+  public readonly buildQuestId?: string;
 
   constructor(country: Element) {
     const neighborhoods = country.querySelector('neighborhoods');
@@ -12,18 +12,20 @@ export class State {
     const id = JSON.parse(idText)[0].toString();
 
     const orderQuest = country.querySelector('generated_quest_order');
-    if (!orderQuest) throw new Error('Generated quest order not found');
-    const orderQuestId = orderQuest.getAttribute('id');
-    if (!orderQuestId) throw new Error('Order quest id not found');
+    if (orderQuest) {
+      const orderQuestId = orderQuest.getAttribute('id');
+      if (!orderQuestId) throw new Error('Order quest id not found');
+      this.orderQuestId = orderQuestId;
+    }
 
     const buildQuest = country.querySelector('generated_quest_buildsite');
-    if (!buildQuest) throw new Error('Generated quest buildsite not found');
-    const buildQuestId = buildQuest.getAttribute('id');
-    if (!buildQuestId) throw new Error('Build quest id not found');
+    if (buildQuest) {
+      const buildQuestId = buildQuest.getAttribute('id');
+      if (!buildQuestId) throw new Error('Build quest id not found');
+      this.buildQuestId = buildQuestId;
+    }
 
     this.id = id;
-    this.orderQuestId = orderQuestId;
-    this.buildQuestId = buildQuestId;
   }
 
   public static hasState(country: Element): boolean {
