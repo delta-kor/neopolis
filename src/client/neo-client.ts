@@ -2,11 +2,11 @@ import { ApiClient } from '../api';
 import { Command, CommandBuilder } from '../command';
 import { Field } from '../field';
 import { Profile } from '../profile';
-import { CleanOption, PickOption } from './option';
+import { CleanOption, PickOption, SendFriendRequestOption } from './option';
 import { Session } from './session';
 
 export class NeoClient {
-  private readonly session: Session = new Session();
+  public readonly session: Session = new Session();
   private readonly apiClient: ApiClient = new ApiClient(this.profile, this.session);
   private readonly commandBuilder: CommandBuilder = new CommandBuilder(this.session);
 
@@ -45,6 +45,23 @@ export class NeoClient {
     }
 
     await this.apiClient.checkAndPerform({ commands, room });
+
+    return this;
+  }
+
+  public async sendFriendRequest(option: SendFriendRequestOption): Promise<NeoClient> {
+    const userId = option.userId;
+
+    const requestCommand = this.commandBuilder.create(
+      { command: 'send_request', name: 'invite_suggested_neighbors', friend_id: userId },
+      0
+    );
+    const updateCommand = this.commandBuilder.create(
+      { command: 'update_invite_neighbors', friend_id: userId },
+      0
+    );
+
+    await this.apiClient.checkAndPerform({ commands: [requestCommand, updateCommand], room: 0 });
 
     return this;
   }
